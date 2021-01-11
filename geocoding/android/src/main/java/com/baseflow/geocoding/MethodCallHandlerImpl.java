@@ -15,6 +15,7 @@ import io.flutter.plugin.common.MethodChannel.Result;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
 
 /**
  * Translates incoming Geocoding MethodCalls into well formed Java function calls for {@link
@@ -89,16 +90,13 @@ final class MethodCallHandlerImpl implements MethodCallHandler {
         }
 
         try {
-            final List<Address> addresses = geocoding.placemarkFromAddress(
+            List<Address> addresses = geocoding.placemarkFromAddress(
                     address,
                     LocaleConverter.fromLanguageTag(languageTag));
 
-            if (addresses == null || addresses.isEmpty()) {
-                result.error(
-                        "NOT_FOUND",
-                        String.format("No coordinates found for '%s'", address),
-                        null);
-                return;
+            // If null, return an empty array.
+            if (addresses == null) {
+                addresses = new ArrayList<Address>();
             }
 
             result.success(AddressMapper.toAddressHashMapList(addresses));
@@ -117,17 +115,15 @@ final class MethodCallHandlerImpl implements MethodCallHandler {
         final String languageTag = call.argument("localeIdentifier");
 
         try {
-            final List<Address> addresses = geocoding.placemarkFromCoordinates(
+            List<Address> addresses = geocoding.placemarkFromCoordinates(
                     latitude,
                     longitude,
                     LocaleConverter.fromLanguageTag(languageTag));
 
-            if (addresses == null || addresses.isEmpty()) {
-                result.error(
-                        "NOT_FOUND",
-                        String.format("No address information found for supplied coordinates (latitude: %f, longitude: %f).", latitude, longitude),
-                        null);
-                return;
+           
+            // If null, return an empty array.
+            if (addresses == null) {
+                addresses = new ArrayList<Address>();
             }
 
             result.success(AddressMapper.toAddressHashMapList(addresses));
