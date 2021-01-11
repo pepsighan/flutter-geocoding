@@ -176,7 +176,7 @@ class Address {
       Locality: $locality,
       Sublocality: $subLocality,
       Thoroughfare: $thoroughfare,
-      Subthoroughfare: $subThoroughfare
+      Subthoroughfare: $subThoroughfare,
       Latitude: $latitude,
       Longitude: $longitude''';
   }
