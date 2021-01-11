@@ -3,9 +3,9 @@ import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 
+import '../../geocoding_platform_interface.dart';
 import '../errors/errors.dart';
 import '../geocoding_platform_interface.dart';
-import '../models/models.dart';
 
 /// An implementation of [GeocodingPlatform] that uses method channels.
 class MethodChannelGeocoding extends GeocodingPlatform {
@@ -14,7 +14,7 @@ class MethodChannelGeocoding extends GeocodingPlatform {
   MethodChannel methodChannel = MethodChannel('flutter.baseflow.com/geocoding');
 
   @override
-  Future<List<Location>> locationFromAddress(
+  Future<List<Address>> locationFromAddress(
     String address, {
     String localeIdentifier,
   }) async {
@@ -31,7 +31,7 @@ class MethodChannelGeocoding extends GeocodingPlatform {
         parameters,
       );
 
-      return Location.fromMaps(placemarks);
+      return Address.fromMaps(placemarks);
     } on PlatformException catch (e) {
       _handlePlatformException(e);
       rethrow;
@@ -39,7 +39,7 @@ class MethodChannelGeocoding extends GeocodingPlatform {
   }
 
   @override
-  Future<List<Placemark>> placemarkFromCoordinates(
+  Future<List<Address>> placemarkFromCoordinates(
     double latitude,
     double longitude, {
     String localeIdentifier,
@@ -55,7 +55,7 @@ class MethodChannelGeocoding extends GeocodingPlatform {
 
     final placemarks = await methodChannel.invokeMethod(
         'placemarkFromCoordinates', parameters);
-    return Placemark.fromMaps(placemarks);
+    return Address.fromMaps(placemarks);
   }
 
   void _handlePlatformException(PlatformException platformException) {

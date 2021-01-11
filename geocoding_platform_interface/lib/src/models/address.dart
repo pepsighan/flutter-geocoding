@@ -1,12 +1,12 @@
 import 'package:meta/meta.dart';
 
-/// Contains detailed placemark information.
+/// Contains detailed address information.
 @immutable
-class Placemark {
-  /// Constructs an instance with the given values for testing. [Placemark]
+class Address {
+  /// Constructs an instance with the given values for testing. [Address]
   /// instances constructed this way won't actually reflect any real information
   /// from the platform, just whatever was passed in at construction time.
-  Placemark({
+  Address({
     this.name,
     this.street,
     this.isoCountryCode,
@@ -18,9 +18,11 @@ class Placemark {
     this.subLocality,
     this.thoroughfare,
     this.subThoroughfare,
+    this.latitude,
+    this.longitude,
   });
 
-  Placemark._({
+  Address._({
     this.name,
     this.street,
     this.isoCountryCode,
@@ -32,44 +34,52 @@ class Placemark {
     this.subLocality,
     this.thoroughfare,
     this.subThoroughfare,
+    this.latitude,
+    this.longitude,
   });
 
-  /// The name associated with the placemark.
+  /// The name associated with the address.
   final String name;
 
-  /// The street associated with the placemark.
+  /// The street associated with the address.
   final String street;
 
   /// The abbreviated country name, according to the two letter (alpha-2) [ISO standard](https://www.iso.org/iso-3166-country-codes.html).
   final String isoCountryCode;
 
-  /// The name of the country associated with the placemark.
+  /// The name of the country associated with the address.
   final String country;
 
-  /// The postal code associated with the placemark.
+  /// The postal code associated with the address.
   final String postalCode;
 
-  /// The name of the state or province associated with the placemark.
+  /// The name of the state or province associated with the address.
   final String administrativeArea;
 
-  /// Additional administrative area information for the placemark.
+  /// Additional administrative area information for the address.
   final String subAdministrativeArea;
 
-  /// The name of the city associated with the placemark.
+  /// The name of the city associated with the address.
   final String locality;
 
-  /// Additional city-level information for the placemark.
+  /// Additional city-level information for the address.
   final String subLocality;
 
-  /// The street address associated with the placemark.
+  /// The street address associated with the address.
   final String thoroughfare;
 
-  /// Additional street address information for the placemark.
+  /// Additional street address information for the address.
   final String subThoroughfare;
+
+  /// The latitude associated with the address.
+  final double latitude;
+
+  /// The longitude associated with the address.
+  final double longitude;
 
   @override
   bool operator ==(dynamic o) =>
-      o is Placemark &&
+      o is Address &&
       o.administrativeArea == administrativeArea &&
       o.country == country &&
       o.isoCountryCode == isoCountryCode &&
@@ -80,7 +90,9 @@ class Placemark {
       o.subAdministrativeArea == subAdministrativeArea &&
       o.subLocality == subLocality &&
       o.subThoroughfare == subThoroughfare &&
-      o.thoroughfare == thoroughfare;
+      o.thoroughfare == thoroughfare &&
+      o.latitude == latitude &&
+      o.longitude == longitude;
 
   @override
   int get hashCode =>
@@ -94,27 +106,29 @@ class Placemark {
       subAdministrativeArea.hashCode ^
       subLocality.hashCode ^
       subThoroughfare.hashCode ^
-      thoroughfare.hashCode;
+      thoroughfare.hashCode ^
+      latitude.hashCode ^
+      longitude.hashCode;
 
-  /// Converts a list of [Map] instances to a list of [Placemark] instances.
-  static List<Placemark> fromMaps(dynamic message) {
+  /// Converts a list of [Map] instances to a list of [Address] instances.
+  static List<Address> fromMaps(dynamic message) {
     if (message == null) {
       throw ArgumentError('The parameter \'message\' should not be null.');
     }
 
-    final List<Placemark> list = message.map<Placemark>(fromMap).toList();
+    final List<Address> list = message.map<Address>(fromMap).toList();
     return list;
   }
 
-  /// Converts the supplied [Map] to an instance of the [Placemark] class.
-  static Placemark fromMap(dynamic message) {
+  /// Converts the supplied [Map] to an instance of the [Address] class.
+  static Address fromMap(dynamic message) {
     if (message == null) {
       throw ArgumentError('The parameter \'message\' should not be null.');
     }
 
     final Map<dynamic, dynamic> placemarkMap = message;
 
-    return Placemark._(
+    return Address._(
       name: placemarkMap['name'] ?? '',
       street: placemarkMap['street'] ?? '',
       isoCountryCode: placemarkMap['isoCountryCode'] ?? '',
@@ -126,10 +140,12 @@ class Placemark {
       subLocality: placemarkMap['subLocality'] ?? '',
       thoroughfare: placemarkMap['thoroughfare'] ?? '',
       subThoroughfare: placemarkMap['subThoroughfare'] ?? '',
+      latitude: placemarkMap['latitude'] ?? null,
+      longitude: placemarkMap['longitude'] ?? null,
     );
   }
 
-  /// Converts the [Placemark] instance into a [Map] instance that can be
+  /// Converts the [Address] instance into a [Map] instance that can be
   /// serialized to JSON.
   Map<String, dynamic> toJson() => {
         'name': name,
@@ -143,6 +159,8 @@ class Placemark {
         'subLocality': subLocality,
         'thoroughfare': thoroughfare,
         'subThoroughfare': subThoroughfare,
+        'latitude': latitude,
+        'longitude': longitude,
       };
 
   @override
@@ -158,6 +176,8 @@ class Placemark {
       Locality: $locality,
       Sublocality: $subLocality,
       Thoroughfare: $thoroughfare,
-      Subthoroughfare: $subThoroughfare''';
+      Subthoroughfare: $subThoroughfare
+      Latitude: $latitude,
+      Longitude: $longitude''';
   }
 }

@@ -1,6 +1,7 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
+
 import 'implementations/method_channel_geocoding.dart';
-import 'models/models.dart';
+import 'models/address.dart';
 
 /// The interface that implementations of Geocoding  must implement.
 ///
@@ -42,7 +43,7 @@ abstract class GeocodingPlatform extends PlatformInterface {
   /// When not supplied the currently active locale of the device will be used.
   /// The `localeIdentifier` should be formatted using the syntax:
   /// [languageCode]_[countryCode] (eg. en_US or nl_NL).
-  Future<List<Location>> locationFromAddress(
+  Future<List<Address>> locationFromAddress(
     String address, {
     String localeIdentifier,
   }) {
@@ -62,7 +63,7 @@ abstract class GeocodingPlatform extends PlatformInterface {
   /// When not supplied the currently active locale of the device will be used.
   /// The `localeIdentifier` should be formatted using the syntax:
   /// [languageCode]_[countryCode] (eg. en_US or nl_NL).
-  Future<List<Placemark>> placemarkFromCoordinates(
+  Future<List<Address>> placemarkFromCoordinates(
     double latitude,
     double longitude, {
     String localeIdentifier,

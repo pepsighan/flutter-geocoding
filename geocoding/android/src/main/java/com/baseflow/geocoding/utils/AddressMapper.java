@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class AddressMapper {
-
     public static List<Map<String, Object>> toAddressHashMapList(List<Address> addresses) {
         List<Map<String, Object>> hashMaps = new ArrayList<>(addresses.size());
 
@@ -37,28 +36,9 @@ public class AddressMapper {
         placemark.put("subAdministrativeArea", address.getSubAdminArea());
         placemark.put("locality", address.getLocality());
         placemark.put("subLocality", address.getSubLocality());
+        location.put("latitude", address.getLatitude());
+        location.put("longitude", address.getLongitude());
 
         return placemark;
     }
-
-    public static List<Map<String, Object>> toLocationHashMapList(List<Address> addresses) {
-        List<Map<String, Object>> hashMaps = new ArrayList<>(addresses.size());
-
-        for (Address address : addresses) {
-            Map<String, Object> hashMap = AddressMapper.toLocationHashmap(address);
-            hashMaps.add(hashMap);
-        }
-
-        return hashMaps;
-    }
-
-    private static Map<String, Object> toLocationHashmap(Address address) {
-        Map<String, Object> location = new HashMap<>();
-
-        location.put("latitude", address.getLatitude());
-        location.put("longitude", address.getLongitude());
-        location.put("timestamp", Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
-
-        return location;
-     }
 }
